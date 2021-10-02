@@ -16,6 +16,9 @@ namespace SQLManager
         public LoginForm()
         {
             InitializeComponent();
+            TbURI.Text = ".";
+            TbUsername.Text = "sa";
+            TbPassword.Text = "SQL";
         }
 
         private void BtConnect_Click(object sender, EventArgs e)

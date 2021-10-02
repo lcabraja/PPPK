@@ -53,6 +53,7 @@ namespace SQLManager
             // 
             this.TbPassword.Location = new System.Drawing.Point(79, 122);
             this.TbPassword.Name = "TbPassword";
+            this.TbPassword.PasswordChar = '*';
             this.TbPassword.Size = new System.Drawing.Size(100, 20);
             this.TbPassword.TabIndex = 1;
             // 
