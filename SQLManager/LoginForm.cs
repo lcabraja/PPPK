@@ -16,9 +16,14 @@ namespace SQLManager
         public LoginForm()
         {
             InitializeComponent();
-            TbURI.Text = ".";
-            TbUsername.Text = "sa";
-            TbPassword.Text = "SQL";
+            FillDevelopmentLoginData();
+        }
+
+        private void FillDevelopmentLoginData()
+        {
+            TbURI.Text = "sql.lcabraja.dev";
+            TbUsername.Text = "SA";
+            TbPassword.Text = "Pa$$word";
         }
 
         private void BtConnect_Click(object sender, EventArgs e)

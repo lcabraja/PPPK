@@ -13,8 +13,8 @@ namespace SQLManager.DAL
         private static string cs;
         private const string ConnectionString = "Server={0};Uid={1};Pwd={2}";
         private const string SelectDatabases = "SELECT name as Name FROM sys.Databases";
-        private const string SelectTables = "SELECT TABLE_SCHEMA AS [Schema], TABLE_NAME AS Name FROM {0}.INFORMATION_SCHEMA_TABLES";
-        private const string SelectViews = "SELECT TABLE_SCHEMA AS [Schema], TABLE_NAME AS Name FROM {0}.INFORMATION_SCHEMA_VIEWS";
+        private const string SelectTables = "SELECT TABLE_SCHEMA AS [Schema], TABLE_NAME AS Name FROM {0}.INFORMATION_SCHEMA.TABLES";
+        private const string SelectViews = "SELECT TABLE_SCHEMA AS [Schema], TABLE_NAME AS Name FROM {0}.INFORMATION_SCHEMA.VIEWS";
 
 
 

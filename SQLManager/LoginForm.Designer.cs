@@ -120,6 +120,7 @@ namespace SQLManager
             this.Controls.Add(this.TbPassword);
             this.Controls.Add(this.BtConnect);
             this.Name = "LoginForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();

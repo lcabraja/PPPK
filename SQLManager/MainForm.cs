@@ -36,7 +36,7 @@ namespace SQLManager
         private void CbDatabases_SelectedValueChanged(object sender, EventArgs e)
         {
             LbTables.DataSource = new List<DBEntity>(Repository.GetDBEntities((Database)CbDatabases.SelectedItem, DBEntityType.Table));
-            //LbViews.DataSource = new List<DBEntity>(Repository.GetDBEntities((Database)CbDatabases.SelectedItem, DBEntityType.View));
+            LbViews.DataSource = new List<DBEntity>(Repository.GetDBEntities((Database)CbDatabases.SelectedItem, DBEntityType.View));
 
         }
     }
