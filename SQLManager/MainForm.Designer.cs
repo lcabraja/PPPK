@@ -54,6 +54,7 @@ namespace SQLManager
             this.LbTables.Name = "LbTables";
             this.LbTables.Size = new System.Drawing.Size(160, 186);
             this.LbTables.TabIndex = 0;
+            this.LbTables.SelectedValueChanged += new System.EventHandler(this.LbTables_SelectedValueChanged);
             // 
             // CbDatabases
             // 
@@ -208,6 +209,7 @@ namespace SQLManager
             this.Controls.Add(this.CbDatabases);
             this.Controls.Add(this.LbTables);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.ResumeLayout(false);

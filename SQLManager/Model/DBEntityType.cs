@@ -8,6 +8,6 @@ namespace SQLManager.Model
 {
     enum DBEntityType
     {
-        Table, View
+        Table, View, Column, Procedure, ProcedureParams, Query
     }
 }

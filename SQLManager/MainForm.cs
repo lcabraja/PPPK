@@ -29,7 +29,6 @@ namespace SQLManager
             LbTables.DataSource = new List<DBEntity>(Repository.GetDBEntities((Database)CbDatabases.SelectedItem, DBEntityType.Table));
         }
 
-
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
             => Application.Exit();
 
@@ -37,7 +36,12 @@ namespace SQLManager
         {
             LbTables.DataSource = new List<DBEntity>(Repository.GetDBEntities((Database)CbDatabases.SelectedItem, DBEntityType.Table));
             LbViews.DataSource = new List<DBEntity>(Repository.GetDBEntities((Database)CbDatabases.SelectedItem, DBEntityType.View));
+        }
 
+        private void LbTables_SelectedValueChanged(object sender, EventArgs e)
+        {
+            LbTableColumns.DataSource = new List<DBEntity>(Repository.GetDBEntities((Column)LbTables.SelectedItem, DBEntityType.Column));
+            LbViewColumns.DataSource = new List<DBEntity>(Repository.GetDBEntities((Column)LbTables.SelectedItem, DBEntityType.Column));
         }
     }
 }
