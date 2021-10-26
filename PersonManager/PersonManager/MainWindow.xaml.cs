@@ -23,6 +23,8 @@ namespace PersonManager
         public MainWindow()
         {
             InitializeComponent();
+            Frame.Navigate(
+                new ListPeoplePage(new ViewModels.PersonViewModel()) { Frame = Frame });
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PersonManager.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,9 +16,11 @@ namespace PersonManager.Models
         public int Age { get; set; }
         public string Email { get; set; }
         public byte[] Picture { get; set; }
-        public BitmapImage Image
-        {
+        public BitmapImage Image {
             get => ImageUtils.ByteArrayToBitmapImage(Picture);
         }
+
+
     }
+
 }
