@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace PersonManager.Utils
+namespace Zadatak.Utils
 {
     public static class ImageUtils
     {
@@ -24,6 +19,7 @@ namespace PersonManager.Utils
                 return bitmap;
             }
         }
+
         public static byte[] BitmapImageToByteArray(BitmapImage image)
         {
             var jpegEncoder = new JpegBitmapEncoder();
@@ -38,11 +34,11 @@ namespace PersonManager.Utils
         public static byte[] ByteArrayFromSqlDataReader(SqlDataReader dr, int column)
         {
             int bufferSize = 1024;
-            byte[] buffer = new byte[bufferSize];
             int currentBytes = 0;
-            using (var memorySteam = new MemoryStream())
+            byte[] buffer = new byte[bufferSize];
+            using (var memoryStream = new MemoryStream())
             {
-                using (var binaryWriter = new BinaryWriter(memorySteam))
+                using (var binaryWriter = new BinaryWriter(memoryStream))
                 {
                     int readBytes;
                     do
@@ -51,8 +47,7 @@ namespace PersonManager.Utils
                         binaryWriter.Write(buffer, 0, readBytes);
                         currentBytes += readBytes;
                     } while (readBytes == bufferSize);
-
-                    return memorySteam.ToArray();
+                    return memoryStream.ToArray();
                 }
             }
         }

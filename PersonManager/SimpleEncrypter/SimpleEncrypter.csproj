@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A7727F67-59A9-4F9A-A1D6-A09317FF3624}</ProjectGuid>
+    <ProjectGuid>{72A360C3-3317-4804-9559-2C5C977177E7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Zadatak</RootNamespace>
-    <AssemblyName>Zadatak</AssemblyName>
+    <RootNamespace>SimpleEncrypter</RootNamespace>
+    <AssemblyName>SimpleEncrypter</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -36,7 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,22 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Dal\IRepository.cs" />
-    <Compile Include="Dal\RepositoryFactory.cs" />
-    <Compile Include="Dal\SqlRepository.cs" />
-    <Compile Include="Models\Person.cs" />
-    <Compile Include="Utils\EncryptionUtils.cs" />
-    <Compile Include="Utils\ImageUtils.cs" />
-    <Compile Include="Utils\ValidationUtils.cs" />
-    <Compile Include="ViewModels\PersonViewModel.cs" />
-    <Page Include="EditPersonPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ListPeoplePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -79,13 +62,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="EditPersonPage.xaml.cs">
-      <DependentUpon>EditPersonPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FramedPage.cs" />
-    <Compile Include="ListPeoplePage.xaml.cs">
-      <DependentUpon>ListPeoplePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -119,10 +95,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\gradient.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\back.png" />
+    <ProjectReference Include="..\PersonManager\PersonManager.csproj">
+      <Project>{a7727f67-59a9-4f9a-a1d6-a09317ff3624}</Project>
+      <Name>PersonManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

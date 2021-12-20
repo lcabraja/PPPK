@@ -1,24 +1,12 @@
-﻿using PersonManager.Models;
-using PersonManager.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Zadatak.Models;
+using Zadatak.ViewModels;
 
-namespace PersonManager
+namespace Zadatak
 {
     /// <summary>
-    /// Interaction logic for ListPeoplePage.xaml
+    /// Interaction logic for ListPersonsPage.xaml
     /// </summary>
     public partial class ListPeoplePage : FramedPage
     {
@@ -28,11 +16,13 @@ namespace PersonManager
             LvUsers.ItemsSource = personViewModel.People;
         }
 
+        private void BtnAdd_Click(object sender, RoutedEventArgs e) => Frame.Navigate(new EditPersonPage(PersonViewModel) { Frame = Frame });
+
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
             if (LvUsers.SelectedItem != null)
             {
-                Frame.Navigate(new EditPersonPage(PersonViewModel, LvUsers.SelectedItem as Person) { Frame = Frame});
+                Frame.Navigate(new EditPersonPage(PersonViewModel, LvUsers.SelectedItem as Person) { Frame = Frame });
             }
         }
 
@@ -41,14 +31,6 @@ namespace PersonManager
             if (LvUsers.SelectedItem != null)
             {
                 PersonViewModel.People.Remove(LvUsers.SelectedItem as Person);
-            }
-        }
-
-        private void BtnAdd_Click(object sender, RoutedEventArgs e)
-        {
-            if (LvUsers.SelectedItem != null)
-            {
-                Frame.Navigate(new EditPersonPage(PersonViewModel) { Frame = Frame });
             }
         }
     }

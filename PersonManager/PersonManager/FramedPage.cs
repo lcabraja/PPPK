@@ -1,22 +1,16 @@
-﻿using PersonManager.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
+using Zadatak.ViewModels;
 
-namespace PersonManager
+namespace Zadatak
 {
+
     public class FramedPage : Page
     {
-
-        public PersonViewModel PersonViewModel { get; }
-        public Frame Frame { get; set; }
-
         public FramedPage(PersonViewModel personViewModel)
         {
             PersonViewModel = personViewModel;
         }
+        public PersonViewModel PersonViewModel { get; }
+        public Frame Frame { get; set; }
     }
 }

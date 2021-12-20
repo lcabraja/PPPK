@@ -1,15 +1,13 @@
-﻿using PersonManager.Models;
-using PersonManager.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using Zadatak.Models;
+using Zadatak.Utils;
 
-namespace PersonManager.Dal
+namespace Zadatak.Dal
 {
     class SqlRepository : IRepository
     {
@@ -20,7 +18,10 @@ namespace PersonManager.Dal
         private const string PictureParam = "@picture";
         private const string IdPersonParam = "@idPerson";
 
-        private static readonly string cs = ConfigurationManager.ConnectionStrings["cs"].ConnectionString;
+        // cannot be const
+        //private static readonly string cs = ConfigurationManager.ConnectionStrings["cs"].ConnectionString;
+        private static readonly string cs = EncryptionUtils.Decrypt(ConfigurationManager.ConnectionStrings["cs"].ConnectionString, "fru1tc@k3");
+
         public void AddPerson(Person person)
         {
             using (SqlConnection con = new SqlConnection(cs))
@@ -29,22 +30,22 @@ namespace PersonManager.Dal
                 using (SqlCommand cmd = con.CreateCommand())
                 {
                     cmd.CommandText = MethodBase.GetCurrentMethod().Name;
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue(FirstNameParam, person.FirstName);
                     cmd.Parameters.AddWithValue(LastNameParam, person.LastName);
                     cmd.Parameters.AddWithValue(AgeParam, person.Age);
                     cmd.Parameters.AddWithValue(EmailParam, person.Email);
-                    cmd.Parameters.Add(new SqlParameter(PictureParam, System.Data.SqlDbType.Binary, person.Picture.Length)
+                    cmd.Parameters.Add(new SqlParameter(PictureParam, SqlDbType.Binary, person.Picture.Length)
                     {
                         Value = person.Picture
                     });
-                    SqlParameter idParam = new SqlParameter(IdPersonParam, System.Data.SqlDbType.Int)
+                    SqlParameter idPerson = new SqlParameter(IdPersonParam, SqlDbType.Int)
                     {
-                        Direction = System.Data.ParameterDirection.Output
+                        Direction = ParameterDirection.Output
                     };
-                    cmd.Parameters.Add(idParam);
+                    cmd.Parameters.Add(idPerson);
                     cmd.ExecuteNonQuery();
-                    person.IDPerson = (int)idParam.Value;
+                    person.IDPerson = (int)idPerson.Value;
                 }
             }
         }
@@ -57,7 +58,7 @@ namespace PersonManager.Dal
                 using (SqlCommand cmd = con.CreateCommand())
                 {
                     cmd.CommandText = MethodBase.GetCurrentMethod().Name;
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue(IdPersonParam, person.IDPerson);
                     cmd.ExecuteNonQuery();
                 }
@@ -73,7 +74,7 @@ namespace PersonManager.Dal
                 using (SqlCommand cmd = con.CreateCommand())
                 {
                     cmd.CommandText = MethodBase.GetCurrentMethod().Name;
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         while (dr.Read())
@@ -86,17 +87,6 @@ namespace PersonManager.Dal
             return people;
         }
 
-        private Person ReadPerson(SqlDataReader dr)
-        => new Person
-        {
-            IDPerson = (int)dr[nameof(Person.IDPerson)],
-            FirstName = dr[nameof(Person.FirstName)].ToString(),
-            LastName = dr[nameof(Person.LastName)].ToString(),
-            Age = (int)dr[nameof(Person.Age)],
-            Email = dr[nameof(Person.Email)].ToString(),
-            Picture = ImageUtils.ByteArrayFromSqlDataReader(dr, 5)
-        };
-
         public Person GetPerson(int idPerson)
         {
             using (SqlConnection con = new SqlConnection(cs))
@@ -105,7 +95,7 @@ namespace PersonManager.Dal
                 using (SqlCommand cmd = con.CreateCommand())
                 {
                     cmd.CommandText = MethodBase.GetCurrentMethod().Name;
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue(IdPersonParam, idPerson);
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
@@ -116,8 +106,19 @@ namespace PersonManager.Dal
                     }
                 }
             }
-            throw new Exception("no such person");
+            throw new Exception("Person does not exist");
         }
+
+        private Person ReadPerson(SqlDataReader dr) => new Person
+            {
+                IDPerson = (int)dr[nameof(Person.IDPerson)],
+                FirstName = dr[nameof(Person.FirstName)].ToString(),
+                LastName = dr[nameof(Person.LastName)].ToString(),
+                Age = (int)dr[nameof(Person.Age)],
+                Email = dr[nameof(Person.Email)].ToString(),
+                Picture = ImageUtils.ByteArrayFromSqlDataReader(dr, 5)
+
+        };
 
         public void UpdatePerson(Person person)
         {
@@ -127,13 +128,13 @@ namespace PersonManager.Dal
                 using (SqlCommand cmd = con.CreateCommand())
                 {
                     cmd.CommandText = MethodBase.GetCurrentMethod().Name;
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue(FirstNameParam, person.FirstName);
                     cmd.Parameters.AddWithValue(LastNameParam, person.LastName);
                     cmd.Parameters.AddWithValue(AgeParam, person.Age);
                     cmd.Parameters.AddWithValue(EmailParam, person.Email);
                     cmd.Parameters.AddWithValue(IdPersonParam, person.IDPerson);
-                    cmd.Parameters.Add(new SqlParameter(PictureParam, System.Data.SqlDbType.Binary, person.Picture.Length)
+                    cmd.Parameters.Add(new SqlParameter(PictureParam, SqlDbType.Binary, person.Picture.Length)
                     {
                         Value = person.Picture
                     });
