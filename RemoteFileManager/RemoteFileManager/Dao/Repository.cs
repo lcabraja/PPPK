@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azure.Storage.Blobs;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace RemoteFileManager.Dao
         private const string ContainerName = "blobcontainer";
         private static readonly string cs = ConfigurationManager.ConnectionStrings["cs"].ConnectionString;
 
-        private static readonly Lazy<>
+        private static readonly Lazy<BlobContainerClient> container = new Lazy<BlobContainerClient>(() => new BlobServiceClient(cs).GetBlobContainerClient(ContainerName));
+
+        public static BlobContainerClient Container => container.Value;
     }
 }
