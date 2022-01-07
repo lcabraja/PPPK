@@ -13,6 +13,6 @@ namespace Cosmos.Models
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
         [JsonProperty(PropertyName = "isCompleted")]
-        public string Completed { get; set; }
+        public bool Completed { get; set; }
     }
 }
