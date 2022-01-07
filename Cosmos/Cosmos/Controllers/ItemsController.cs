@@ -1,4 +1,5 @@
 ﻿using Cosmos.Dao;
+using Cosmos.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,24 @@ namespace Cosmos.Controllers
             return View(await service.GetItemsAsync("SELECT * FROM Item"));
         }
 
-        // GET: Items/Details/5
-        public ActionResult Details(int id)
+        private async Task<ActionResult> ShowItem(string id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            var item = await service.GetItemAsync(id);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            return View(item);
+        }
+
+        // GET: Items/Details/5
+        public async Task<ActionResult> Details(string id)
+        {
+            return await ShowItem(id);
         }
 
         // GET: Items/Create
@@ -31,62 +46,47 @@ namespace Cosmos.Controllers
 
         // POST: Items/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public async Task<ActionResult> Create([Bind(Include = "Name, Description, Completed")] Item item)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
+                item.Id = Guid.NewGuid().ToString();
+                await service.AddItemAsync(item);
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return View(item);
         }
 
         // GET: Items/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(string id)
         {
-            return View();
+            return await ShowItem(id);
         }
 
         // POST: Items/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public async Task<ActionResult> Edit([Bind(Include = "Id, Name, Description, Completed")] Item item)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
+                await service.UpdateItemAsync(item);
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return View(item);
         }
 
         // GET: Items/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
-            return View();
+            return await ShowItem(id);
         }
 
         // POST: Items/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public async Task<ActionResult> Delet([Bind(Include = "Id, Name, Description, Completed")] Item item)
         {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            await service.DeleteItemAsync(item);
+            return RedirectToAction("Index");
         }
     }
 }
