@@ -35,28 +35,25 @@ namespace RemoteFileManager.ViewModels
             Refresh();
         }
 
-        private void Refresh()
-        {
+        private void Refresh() {
             Items.Clear();
             Directories.Clear();
-            Repository.Container.GetBlobs().ToList().ForEach(item =>
-            {
-                if (item.Name.Contains(ForwardSlash))
-                {
+            RefreshAzureBlob();
+        }
+
+        private void RefreshAzureBlob() {
+            Repository.Container.GetBlobs().ToList().ForEach(item => {
+                if (item.Name.Contains(ForwardSlash)) {
                     string dir = item.Name.Substring(0, item.Name.LastIndexOf(ForwardSlash));
-                    if (!Directories.Contains(dir))
-                    {
+                    if (!Directories.Contains(dir)) {
                         Directories.Add(dir);
                     }
                 }
 
                 // handle root
-                if (string.IsNullOrEmpty(Directory) && !item.Name.Contains(ForwardSlash))
-                {
+                if (string.IsNullOrEmpty(Directory) && !item.Name.Contains(ForwardSlash)) {
                     Items.Add(item);
-                }
-                else if (!string.IsNullOrEmpty(Directory) && item.Name.Contains(Directory + ForwardSlash))
-                {
+                } else if (!string.IsNullOrEmpty(Directory) && item.Name.Contains(Directory + ForwardSlash)) {
                     Items.Add(item);
                 }
             });
