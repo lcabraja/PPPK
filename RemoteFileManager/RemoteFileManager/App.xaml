@@ -23,6 +23,6 @@
         </Style>
         <Style
             TargetType="Button">
-            <Setter Property="Foreground" Value="White
+            <Setter Property="Foreground" Value="White"/>
     </Application.Resources>
 </Application>
