@@ -4,6 +4,9 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using System.Linq;
 using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace S3Repository {
 	public interface IS3Repository {
