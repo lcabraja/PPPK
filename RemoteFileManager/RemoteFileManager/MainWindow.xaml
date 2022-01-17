@@ -56,6 +56,6 @@
         <TextBox HorizontalAlignment="Right" Margin="0,150,26,0" Text="{Binding Properties.LastModified, Mode=OneWay}" IsReadOnly="True" VerticalAlignment="Top" Width="297"/>
         <Label Content="Server encrypted" HorizontalAlignment="Right" Margin="0,190,341,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Right" Margin="0,196,239,0" Text="{Binding Properties.ServerEncrypted, Mode=OneWay}" IsReadOnly="True" VerticalAlignment="Top" Width="84"/>
-        <Image x:Name="imPreview" Margin="0,262,24,29" Source="{Binding BindsDirectlyToSource=True, Converter={StaticResource S3URLFormatter}, FallbackValue=/Assets/no_image.png, Mode=OneWay, TargetNullValue=/Assets/no_image.png}" HorizontalAlignment="Right" Width="430" Stretch="None" />
+        <Image x:Name="imPreview" Margin="346,262,24,29" Source="{Binding Mode=OneWay, Converter={StaticResource S3URLFormatter}, TargetNullValue=Assets/no_image.png}" />
     </Grid>
 </Window>

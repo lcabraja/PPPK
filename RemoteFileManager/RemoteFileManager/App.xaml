@@ -5,7 +5,6 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ImageBrush x:Key="GradientBackground" ImageSource="/Assets/gradient.png" />
-        <ImageBrush x:Key="NoImage" ImageSource="/Assets/no_image.png" />
         <Style
             TargetType="TextBox">
             <Setter Property="Foreground" Value="White"/>

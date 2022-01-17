@@ -73,10 +73,11 @@ namespace RemoteFileManager.ViewModels {
         public async Task DownloadAsync(S3Object blobItem, string filename) {
             await Repository.Bucket.DownloadFileAsync(blobItem.Key, filename);
         }
-        public async Task UploadAsync(string path, string dir) {
+        public async Task UploadAsync(string path) {
             string filename = Path.GetFileName(path);
-            if (!string.IsNullOrEmpty(dir)) {
-                filename = dir + filename;
+            string extension = Path.GetExtension(path);
+            if (!string.IsNullOrEmpty(extension)) {
+                filename = $"{extension[1..]}/{filename}";
             }
             await Repository.Bucket.UploadFileAsync(filename, path);
             Refresh();

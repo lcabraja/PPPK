@@ -52,9 +52,16 @@ namespace RemoteFileManager {
         }
 
         private async void BtnUpload_Click(object sender, RoutedEventArgs e) {
-            var openFileDialog = new OpenFileDialog();
+            var openFileDialog = new OpenFileDialog {
+                Filter = "All Images|*.jpg;*.jpeg;*.png;*.tif;*.gif;*.svg|" +
+                         "JPEG Images|*.jpg;*.jpeg|" +
+                         "PNG Images|*.png|" +
+                         "TIFF Images|*.tif|" +
+                         "GIF Images|*.gif|" +
+                         "SVG Images|*.svg"
+            };
             if (openFileDialog.ShowDialog() == true) {
-                await itemsViewModel.UploadAsync(openFileDialog.FileName, CbDirectories.Text);
+                await itemsViewModel.UploadAsync(openFileDialog.FileName);
             }
             CbDirectories.Text = itemsViewModel.Directory;
         }
