@@ -1,5 +1,4 @@
 ﻿using Amazon.S3.Model;
-using Azure.Storage.Blobs.Models;
 using Microsoft.Win32;
 using RemoteFileManager.Dao;
 using RemoteFileManager.ViewModels;
@@ -52,7 +51,7 @@ namespace RemoteFileManager {
         }
 
         private void LbItems_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            DataContext = LbItems.SelectedItem as BlobItem;
+            DataContext = LbItems.SelectedItem as S3Object;
         }
 
         private async void BtnUpload_Click(object sender, RoutedEventArgs e) {
