@@ -6,7 +6,7 @@ using System.Linq;
 using System;
 
 namespace S3Repository {
-	public delegate void AmazonFileProgressChangeEventHandler(string remoteFilename, long currentBytes, long totalBytes, int percentDone);
+    public delegate void AmazonFileProgressChangeEventHandler(string remoteFilename, long currentBytes, long totalBytes, int percentDone);
 
     public class AWSS3Repository : IS3Repository {
         public event AmazonFileProgressChangeEventHandler? FileProgressChanged;
@@ -18,8 +18,19 @@ namespace S3Repository {
             _client = new AmazonS3Client(credentials, RegionEndpoint.EUCentral1);
             _transfer = new TransferUtility(_client);
         }
+
+        public AWSS3Repository(Amazon.Runtime.AWSCredentials credentials, AmazonS3Config config) {
+            _client = new AmazonS3Client(credentials, config);
+            _transfer = new TransferUtility(_client);
+        }
+
         public AWSS3Repository(string accessKeyID, string secret) {
             _client = new AmazonS3Client(accessKeyID, secret, RegionEndpoint.EUCentral1);
+            _transfer = new TransferUtility(_client);
+        }
+
+        public AWSS3Repository(string accessKeyID, string secret, string endpoint) {
+            _client = new AmazonS3Client(accessKeyID, secret, new AmazonS3Config { ServiceURL = endpoint });
             _transfer = new TransferUtility(_client);
         }
 
@@ -30,11 +41,10 @@ namespace S3Repository {
                 buckets.Add(bucket.BucketName);
             return buckets;
         }
-        public async Task<IList<S3Object>> GetObjectsInBucketAsync(string bucketName, string path, CancellationToken cancellationToken) {
+        public async Task<IList<S3Object>> GetObjectsInBucketAsync(string bucketName, CancellationToken cancellationToken) {
             List<S3Object> items = new();
             ListObjectsRequest? req = new() {
-                BucketName = bucketName,
-                Prefix = path
+                BucketName = bucketName
             };
 
             do {

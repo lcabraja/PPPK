@@ -8,7 +8,7 @@ using System;
 namespace S3Repository {
 	public interface IS3Repository {
 		Task<IList<string>> GetBucketsAsync();
-		Task<IList<S3Object>> GetObjectsInBucketAsync(string bucketName, string path, CancellationToken cancellationToken);
+		Task<IList<S3Object>> GetObjectsInBucketAsync(string bucketName, CancellationToken cancellationToken);
 		Task<IList<S3Object>> GetObjectsInPathAsync(string bucketName, string path, CancellationToken cancellationToken);
 		Task CreateFolderAsync(string bucketName, string remotePath);
 		Task CreateFoldersAsync(string bucketName, IList<string> remotePaths);
