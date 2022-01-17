@@ -16,7 +16,7 @@
             HorizontalAlignment="Left" Margin="135,30,0,0" VerticalAlignment="Top" Width="168"/>
         <ListBox 
             x:Name="LbItems"
-            DisplayMemberPath="Name"
+            DisplayMemberPath="Key"
             SelectionChanged="LbItems_SelectionChanged"
             d:ItemsSource="{d:SampleData ItemCount=5}" Margin="35,65,497,128"/>
         <Button 

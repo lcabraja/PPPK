@@ -1,5 +1,12 @@
-﻿using System;
+﻿using Amazon.S3.Model;
+using Azure.Storage.Blobs.Models;
+using Microsoft.Win32;
+using RemoteFileManager.Dao;
+using RemoteFileManager.ViewModels;
+using S3Repository;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,25 +64,24 @@ namespace RemoteFileManager {
         }
 
         private async void BtnDownload_Click(object sender, RoutedEventArgs e) {
-            if (!(LbItems.SelectedItem is BlobItem blobItem)) {
+            if (!(LbItems.SelectedItem is S3Object s3object)) {
                 return;
             }
             var saveFileDialog = new SaveFileDialog {
-                FileName = System.IO.Path.GetFileName(blobItem.Name)
+                FileName = System.IO.Path.GetFileName(s3object.Key)
             };
             if (saveFileDialog.ShowDialog() == true) {
-                await itemsViewModel.DownloadAsync(blobItem, saveFileDialog.FileName);
+                await itemsViewModel.DownloadAsync(s3object, saveFileDialog.FileName);
             }
             CbDirectories.Text = itemsViewModel.Directory;
         }
 
         private async void BtnDelete_Click(object sender, RoutedEventArgs e) {
-            if (!(LbItems.SelectedItem is BlobItem blobItem)) {
+            if (!(LbItems.SelectedItem is S3Object s3object)) {
                 return;
             }
-            await itemsViewModel.DeleteAsync(blobItem);
+            await itemsViewModel.DeleteAsync(s3object);
             CbDirectories.Text = itemsViewModel.Directory;
         }
     }
-}
 }
