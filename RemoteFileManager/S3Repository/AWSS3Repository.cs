@@ -2,8 +2,6 @@ using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using System.Linq;
-using System;
 
 namespace S3Repository {
     public delegate void AmazonFileProgressChangeEventHandler(string remoteFilename, long currentBytes, long totalBytes, int percentDone);

@@ -1,12 +1,7 @@
-using Amazon;
-using Amazon.S3;
 using Amazon.S3.Model;
-using Amazon.S3.Transfer;
-using System.Linq;
-using System;
 
 namespace S3Repository {
-	public interface IS3Repository {
+    public interface IS3Repository {
 		Task<IList<string>> GetBucketsAsync();
 		Task<IList<S3Object>> GetObjectsInBucketAsync(string bucketName, CancellationToken cancellationToken);
 		Task<IList<S3Object>> GetObjectsInPathAsync(string bucketName, string path, CancellationToken cancellationToken);
