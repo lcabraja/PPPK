@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace RemoteFileManager.Extensions {
     static class S3ObjectExtension {
         public static string GetName(this S3Object s3Object) {
-            int location = s3Object.Key.LastIndexOf("\\");
-            location = location > 0 ? location : 0;
+            int location = s3Object.Key.LastIndexOf('/');
+            location = location > 0 ? location + 1 : 0;
             return s3Object.Key[location..];
         }
         public static string GetName(this S3Object s3Object, string directory)

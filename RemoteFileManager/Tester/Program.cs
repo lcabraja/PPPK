@@ -1,4 +1,5 @@
-﻿// .ToList().ForEach(Console.WriteLine);
+﻿
+// .ToList().ForEach(Console.WriteLine);
 
 using Amazon.S3.Model;
 using S3Repository;
@@ -10,9 +11,9 @@ void SeparateLines() {
 };
 
 AWSBucketRepository bucket = new AWSBucketRepository(
-    "",
-    "",
-    ""
+    "hr.algebra.lcabraja.testbucket",
+    "AKIAWLDXOVJS5ZCYLFHH",
+    "8X4/XMtKRIm9FM/RiSqmUrqG1CF0uux+pKFUjmgc"
 );
 
 var token = new CancellationToken();
@@ -52,3 +53,5 @@ directories.OrderBy(dir => dir).ToList().ForEach(dir => {
         });
 });
 SeparateLines();
+
+bucket.GetObjectsInPathAsync("what/are/you/looking/aglbera_waifu2x_4096x4096_2n_png.png", token).GetAwaiter().GetResult().ListItems();

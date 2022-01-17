@@ -9,10 +9,14 @@
 
   <ItemGroup>
     <None Remove="Assets\gradient.png" />
+    <None Remove="Assets\no_image.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\gradient.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\no_image.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

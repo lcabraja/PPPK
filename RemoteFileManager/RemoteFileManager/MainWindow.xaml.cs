@@ -1,8 +1,10 @@
 ﻿using Amazon.S3.Model;
 using Microsoft.Win32;
+using RemoteFileManager.Converters;
 using RemoteFileManager.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace RemoteFileManager {
@@ -11,7 +13,7 @@ namespace RemoteFileManager {
     /// </summary>
     public partial class MainWindow : Window {
         private readonly ItemsViewModel itemsViewModel;
-
+        public string Directory { get => itemsViewModel.Directory; }
         public MainWindow() {
             InitializeComponent();
             itemsViewModel = new ItemsViewModel();
@@ -21,6 +23,11 @@ namespace RemoteFileManager {
         private void Init() {
             CbDirectories.ItemsSource = itemsViewModel.Directories;
             LbItems.ItemsSource = itemsViewModel.Items;
+
+            //S3ObjectToString s3StringFormatter = new();
+            //Binding binding = new Binding("itemsViewMode.Items");
+            //binding.Converter = s3StringFormatter;
+            //LbItems.DataContext = itemsViewModel.Items;
         }
 
         private void CbDirectories_KeyDown(object sender, KeyEventArgs e) {
@@ -37,7 +44,11 @@ namespace RemoteFileManager {
         }
 
         private void LbItems_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            DataContext = LbItems.SelectedItem as S3Object;
+            if (LbItems.SelectedItem != null && LbItems.SelectedItem is S3Object s3Object) {
+                DataContext = s3Object;
+            } else {
+                DataContext = null;
+            }
         }
 
         private async void BtnUpload_Click(object sender, RoutedEventArgs e) {

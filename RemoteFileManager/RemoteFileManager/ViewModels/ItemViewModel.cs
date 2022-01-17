@@ -1,6 +1,8 @@
 ﻿using Amazon.S3.Model;
 using RemoteFileManager.Dao;
 using RemoteFileManager.Extensions;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace RemoteFileManager.ViewModels {
     class ItemsViewModel {
         public const string ForwardSlash = "/";
         private string directory = "";
-        private System.Threading.CancellationToken? cancelRefresh;
+        private System.Threading.CancellationTokenSource cancelRefresh = new();
 
         public string Directory {
             get => directory;
@@ -20,32 +22,48 @@ namespace RemoteFileManager.ViewModels {
             }
         }
 
-        public ObservableCollection<string> Items { get; }
+        public ObservableCollection<S3Object> Items { get; }
         public ObservableCollection<string> Directories { get; }
 
         public ItemsViewModel() {
             Items = new();
-            Directories = new ObservableCollection<string>();
+            Directories = new();
             Refresh();
         }
 
+        private bool isRefreshing = false;
         private async void Refresh() {
-            if (cancelRefresh == null || !cancelRefresh.Value.IsCancellationRequested) {
-                cancelRefresh = new System.Threading.CancellationToken();
-
-                Items.Clear();
-                Directories.Clear();
-                Directories.Add("");
-                (await Repository.Bucket.GetObjectsInBucketAsync(cancelRefresh.GetValueOrDefault()))
-                    .GetDirectories()
-                    .ToList()
-                    .ForEach(dir => Directories.Add(dir));
-                (await Repository.Bucket.GetObjectsInPathAsync(Directory, cancelRefresh.GetValueOrDefault()))
-                    .GetDirectoryContents(Directory)
-                    .ToList()
-                    .ForEach(item => Items.Add(item.GetName(Directory)));
+            if (!isRefreshing) {
+                isRefreshing = true;
+                try {
+                    if (!cancelRefresh.IsCancellationRequested) {
+                        Directories.Clear();
+                        Directories.Add("");
+                        (await Repository.Bucket.GetObjectsInBucketAsync(cancelRefresh.Token))
+                        .GetDirectories()
+                        .ToList()
+                        .ForEach(dir => Directories.Add(dir));
+                    }
+                    if (!cancelRefresh.IsCancellationRequested) {
+                        Items.Clear();
+                        (await Repository.Bucket.GetObjectsInPathAsync(Directory, cancelRefresh.Token))
+                        .GetDirectoryContents(Directory)
+                        .ToList()
+                        .ForEach(item => Items.Add(item));
+                    }
+                } catch (TaskCanceledException) {
+                } finally {
+                    cancelRefresh.Dispose();
+                    cancelRefresh = new();
+                    isRefreshing = false;
+                }
+            } else {
+                cancelRefresh.Cancel();
+                cancelRefresh.Dispose();
+                cancelRefresh = new();
+                isRefreshing = false;
+                Refresh();
             }
-            cancelRefresh = null;
         }
 
         public async Task DeleteAsync(S3Object blobItem) {
