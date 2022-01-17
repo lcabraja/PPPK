@@ -20,16 +20,12 @@ namespace RemoteFileManager.ViewModels {
         public string Directory {
             get => directory;
             set {
-                var temp = value;
-                if (!temp.EndsWith(ForwardSlash)) {
-                    temp += ForwardSlash;
-                }
-                directory = temp;
+                directory = value;
                 Refresh();
             }
         }
 
-        public ObservableCollection<S3Object> Items { get; }
+        public ObservableCollection<string> Items { get; }
         public ObservableCollection<string> Directories { get; }
 
         public ItemsViewModel() {
@@ -41,21 +37,18 @@ namespace RemoteFileManager.ViewModels {
         private async void Refresh() {
             if (cancelRefresh == null || !cancelRefresh.Value.IsCancellationRequested) {
                 cancelRefresh = new System.Threading.CancellationToken();
+
                 Items.Clear();
                 Directories.Clear();
-                (await Repository.Bucket.GetObjectsInBucketAsync(cancelRefresh.GetValueOrDefault())).ToList().ForEach(item => {
-                    if (item.Key.Contains(ForwardSlash)) {
-                        string directory = item.Key.Substring(0, item.Key.LastIndexOf(ForwardSlash));
-                        if (!Directories.Contains(directory)) {
-                            Directories.Add(directory);
-                        }
-                    }
-                    if (string.IsNullOrEmpty(Directory) && !item.Key.Contains(ForwardSlash)) {
-                        Items.Add(item);
-                    } else if (!string.IsNullOrEmpty(Directory) && item.Key.Contains($"{Directory}{ForwardSlash}")) {
-                        Items.Add(item);
-                    }
-                });
+                Directories.Add("");
+                (await Repository.Bucket.GetObjectsInBucketAsync(cancelRefresh.GetValueOrDefault()))
+                    .GetDirectories()
+                    .ToList()
+                    .ForEach(dir => Directories.Add(dir));
+                (await Repository.Bucket.GetObjectsInPathAsync(Directory, cancelRefresh.GetValueOrDefault()))
+                    .GetDirectoryContents(Directory)
+                    .ToList()
+                    .ForEach(item => Items.Add(item.GetName(Directory)));
             }
             cancelRefresh = null;
         }
@@ -70,9 +63,9 @@ namespace RemoteFileManager.ViewModels {
         public async Task UploadAsync(string path, string dir) {
             string filename = Path.GetFileName(path);
             if (!string.IsNullOrEmpty(dir)) {
-                filename = dir + ForwardSlash + filename;
+                filename = dir + filename;
             }
-            await Repository.Bucket.UploadFileAsync(path, filename);
+            await Repository.Bucket.UploadFileAsync(filename, path);
             Refresh();
         }
     }
