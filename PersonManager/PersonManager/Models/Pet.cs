@@ -3,19 +3,17 @@ using Zadatak.Utils;
 
 namespace Zadatak.Models
 {
-    public class Person 
+    public class Pet 
     {
-        public int IDPerson { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public int IDPet { get; set; }
+        public string Name { get; set; }
         public int Age{ get; set; }
-        public string Email { get; set; }
+        public int OwnerID { get; set; }
         public byte[] Picture { get; set; }
         public BitmapImage Image
         {
             get => ImageUtils.ByteArrayToBitmapImage(Picture);
         }
 
-        public override string ToString() => $"{FirstName} {LastName}";
     }
 }

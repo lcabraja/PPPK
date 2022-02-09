@@ -56,19 +56,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\PetToOwnerPicture.cs" />
+    <Compile Include="Converters\PetToOwnerName.cs" />
     <Compile Include="Dal\IRepository.cs" />
     <Compile Include="Dal\RepositoryFactory.cs" />
     <Compile Include="Dal\SqlRepository.cs" />
+    <Compile Include="EditPetPage.xaml.cs">
+      <DependentUpon>EditPetPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Pet.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Utils\EncryptionUtils.cs" />
     <Compile Include="Utils\ImageUtils.cs" />
     <Compile Include="Utils\ValidationUtils.cs" />
+    <Compile Include="ViewModels\PetViewModel.cs" />
     <Compile Include="ViewModels\PersonViewModel.cs" />
+    <Page Include="EditPetPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="EditPersonPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ListPeoplePage.xaml">
+    <Page Include="ListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -84,8 +95,8 @@
       <DependentUpon>EditPersonPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="FramedPage.cs" />
-    <Compile Include="ListPeoplePage.xaml.cs">
-      <DependentUpon>ListPeoplePage.xaml</DependentUpon>
+    <Compile Include="ListPage.xaml.cs">
+      <DependentUpon>ListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

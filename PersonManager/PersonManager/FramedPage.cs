@@ -10,7 +10,13 @@ namespace Zadatak
         {
             PersonViewModel = personViewModel;
         }
+        public FramedPage(PersonViewModel personViewModel, PetViewModel petViewModel) {
+            PersonViewModel = personViewModel;
+            PetViewModel = petViewModel;
+        }
+
         public PersonViewModel PersonViewModel { get; }
+        public PetViewModel PetViewModel { get; }
         public Frame Frame { get; set; }
     }
 }

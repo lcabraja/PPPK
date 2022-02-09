@@ -11,7 +11,7 @@ namespace Zadatak
         public MainWindow()
         {
             InitializeComponent();
-            Frame.Navigate(new ListPeoplePage(new ViewModels.PersonViewModel()) { Frame = Frame });
+            Frame.Navigate(new ListPage(new ViewModels.PersonViewModel(), new ViewModels.PetViewModel()) { Frame = Frame });
         }
     }
 }

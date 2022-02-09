@@ -1,0 +1,165 @@
+﻿<local:FramedPage x:Class="Zadatak.ListPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Zadatak" xmlns:converters="clr-namespace:Zadatak.Converters"
+      mc:Ignorable="d" 
+      d:DesignHeight="400" d:DesignWidth="600"
+      Title="ListPersonsPage">
+
+    <TabControl Background="{StaticResource GradientBackground}">
+        <TabItem Header="People">
+            <Grid>
+                <ListView Margin="28,54,26,69" Name="LvUsers" AlternationCount="2">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <EventSetter Event="MouseDoubleClick" Handler="BtnEdit_Click"/>
+                            <Setter Property="Background" Value="LightBlue"/>
+                            <Style.Triggers>
+                                <Trigger Property="ListView.AlternationIndex" Value="1">
+                                    <Setter Property="Background" Value="White"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsSelected" Value="true" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" Value="CadetBlue" />
+                                </MultiTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="126" Header="FirstName" DisplayMemberBinding="{Binding FirstName}" />
+                            <GridViewColumn Width="126" Header="LastName" DisplayMemberBinding="{Binding LastName}" />
+                            <GridViewColumn Width="126" Header="Age" DisplayMemberBinding="{Binding Age}" />
+                            <GridViewColumn Width="126" Header="Email" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Email}" TextDecorations="Underline" Foreground="Black" Cursor="Hand">
+                                            <TextBlock.ToolTip>
+                                                <Image x:Name="Picture" Source="{Binding Image}" Width="60" Height="60" Margin="0,0,5,0" />
+                                            </TextBlock.ToolTip>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <Button 
+            x:Name="BtnEdit"
+            Content="Edit" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Width="75" 
+            Foreground="WhiteSmoke"
+            Background="#13242C"            
+            Click="BtnEdit_Click" RenderTransformOrigin="1.101,3.807" Margin="402,333,0,0"/>
+                <Button 
+            x:Name="BtnDelete"
+            Content="Delete" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Width="75" 
+            Foreground="WhiteSmoke"
+            Background="#FFD41B43"            
+            Click="BtnDelete_Click" RenderTransformOrigin="1.101,3.807" Margin="499,333,0,0"/>
+                <Button 
+            x:Name="BtnAdd"
+            Content="Add" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Width="75" 
+            Foreground="WhiteSmoke"
+            Background="#FF246844"            
+            Click="BtnAdd_Click" RenderTransformOrigin="1.101,3.807" Margin="302,333,0,0"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Pets">
+            <Grid>
+                <Grid.Resources>
+                    <converters:PetToOwnerName x:Key="PetOwnerNameConverter" />
+                    <converters:PetToOwnerPicture x:Key="PetOwnerPictureConverter" />
+                </Grid.Resources>
+                <ListView Margin="28,54,26,69" Name="LvPets" AlternationCount="2">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <EventSetter Event="MouseDoubleClick" Handler="BtnEdit_Click"/>
+                            <Setter Property="Background" Value="LightBlue"/>
+                            <Style.Triggers>
+                                <Trigger Property="ListView.AlternationIndex" Value="1">
+                                    <Setter Property="Background" Value="White"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsSelected" Value="true" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" Value="CadetBlue" />
+                                </MultiTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="126" Header="Name">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}">
+                                            <TextBlock.ToolTip>
+                                                <Image x:Name="PicturePet" Source="{Binding Image}" Width="60" Height="60" Margin="0,0,5,0" />
+                                            </TextBlock.ToolTip>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="126" Header="Age" DisplayMemberBinding="{Binding Age}" />
+                            <GridViewColumn Width="126" Header="Owner">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Mode=OneWay, Converter={StaticResource PetOwnerNameConverter}}">
+                                            <TextBlock.ToolTip>
+                                                <Image x:Name="PicturePet" Source="{Binding Mode=OneWay, Converter={StaticResource PetOwnerPictureConverter}}" Width="60" Height="60" Margin="0,0,5,0" />
+                                            </TextBlock.ToolTip>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <Button 
+                    x:Name="BtnEditPet"
+                    Content="Edit" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top" 
+                    Width="75" 
+                    Foreground="WhiteSmoke"
+                    Background="#13242C"            
+                    Click="BtnEditPet_Click" RenderTransformOrigin="1.101,3.807" Margin="402,333,0,0"/>
+                <Button 
+                    x:Name="BtnDeletePet"
+                    Content="Delete" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top" 
+                    Width="75" 
+                    Foreground="WhiteSmoke"
+                    Background="#FFD41B43"            
+                    Click="BtnDeletePet_Click" RenderTransformOrigin="1.101,3.807" Margin="499,333,0,0"/>
+                <Button 
+                    x:Name="BtnAddPet"
+                    Content="Add" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top" 
+                    Width="75" 
+                    Foreground="WhiteSmoke"
+                    Background="#FF246844"   
+                    Click="BtnAddPet_Click"
+                    RenderTransformOrigin="1.101,3.807" Margin="302,333,0,0"/>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</local:FramedPage>
