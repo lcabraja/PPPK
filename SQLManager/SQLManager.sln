@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31321.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLManager", "SQLManager.csproj", "{EC069896-F725-48A5-9C7C-7B44372A67DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLManager", "SQLManager.csproj", "{BEDF80D2-3E20-4D60-B365-74F1E7E251CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EC069896-F725-48A5-9C7C-7B44372A67DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC069896-F725-48A5-9C7C-7B44372A67DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC069896-F725-48A5-9C7C-7B44372A67DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC069896-F725-48A5-9C7C-7B44372A67DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEDF80D2-3E20-4D60-B365-74F1E7E251CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEDF80D2-3E20-4D60-B365-74F1E7E251CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEDF80D2-3E20-4D60-B365-74F1E7E251CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEDF80D2-3E20-4D60-B365-74F1E7E251CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {D350A949-F6A5-4426-99F8-05A79A99CE3A}
+		SolutionGuid = {7516E5F8-8159-4E59-B0A2-E136351800AC}
 	EndGlobalSection
 EndGlobal

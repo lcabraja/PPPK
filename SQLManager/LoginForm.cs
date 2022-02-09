@@ -1,42 +1,26 @@
-﻿using SQLManager.DAL;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
+using Zadatak.Dal;
 
-namespace SQLManager
+namespace Zadatak
 {
     public partial class LoginForm : Form
     {
         public LoginForm()
         {
             InitializeComponent();
-            FillDevelopmentLoginData();
         }
 
-        private void FillDevelopmentLoginData()
-        {
-            TbURI.Text = "sql.lcabraja.dev";
-            TbUsername.Text = "SA";
-            TbPassword.Text = "Pa$$word";
-        }
-
-        private void BtConnect_Click(object sender, EventArgs e)
+        private void BtnLogIn_Click(object sender, EventArgs e)
         {
             try
             {
-                Repository.LogIn(
-                    TbURI.Text.Trim(), 
-                    TbUsername.Text.Trim(), 
-                    TbPassword.Text.Trim()
-                );
+                // exception driven, but ok
+                
+                RepositoryFactory.GetRepository().LogIn(TbServer.Text.Trim(), TbUserName.Text.Trim(), TbPassword.Text.Trim());
                 new MainForm().Show();
-                Hide();
+                Hide(); // we cannot dispose or close cause the child dies!
+                // do not forget to catch Form_Closing of child to kill the application!
             }
             catch (Exception ex)
             {
