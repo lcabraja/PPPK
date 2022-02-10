@@ -5,7 +5,10 @@
  */
 package hr.algebra;
 
+import hr.algebra.utilities.ViewUtils;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,15 +21,17 @@ import javafx.stage.Stage;
  */
 public class PeopleApplication extends Application {
     
+    private static Stage mainStage = null;
+    private static boolean showingPeople = false;
+    
     @Override
     public void start(Stage primaryStage) throws IOException {
-        
+        mainStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("view/People.fxml"));
-        
-        Scene scene = new Scene(root, 600, 400);
-        
+        Scene scene = new Scene(root);
         primaryStage.setTitle("People manager");
         primaryStage.setScene(scene);
+        primaryStage.centerOnScreen();
         primaryStage.show();
     }
 
@@ -37,4 +42,18 @@ public class PeopleApplication extends Application {
         launch(args);
     }
     
+    public static Stage getMainStage() {
+        return mainStage;
+    }
+    
+    public static void toggleStage() {
+        if (mainStage != null) {
+            try {
+                ViewUtils.loadView(PeopleApplication.class.getResource(showingPeople ? "view/People.fxml" : "view/Pets.fxml"));
+                showingPeople = !showingPeople;
+            } catch (IOException ex) {
+                Logger.getLogger(PeopleApplication.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }

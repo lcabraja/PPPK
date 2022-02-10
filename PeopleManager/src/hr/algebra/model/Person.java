@@ -147,7 +147,7 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "hr.algebra.model.Person[ iDPerson=" + iDPerson + " ]";
+        return firstName + " " + lastName;
     }
 
     public void updateDetails(Person data) {

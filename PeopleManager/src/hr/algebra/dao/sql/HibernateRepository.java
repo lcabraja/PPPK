@@ -7,6 +7,7 @@ package hr.algebra.dao.sql;
 
 import hr.algebra.dao.Repository;
 import hr.algebra.model.Person;
+import hr.algebra.model.Pet;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -21,7 +22,6 @@ public class HibernateRepository implements Repository {
             em.persist(person);
             em.getTransaction().commit();
             return person.getIDPerson();
-
         }
     }
 
@@ -30,9 +30,7 @@ public class HibernateRepository implements Repository {
         try (EntityManagerWrapper wrapper = HibernateFactory.getEntityManger()) {
             EntityManager em = wrapper.get();
             em.getTransaction().begin();
-
             em.find(Person.class, person.getIDPerson()).updateDetails(person);
-
             em.getTransaction().commit();
         }
     }
@@ -42,9 +40,7 @@ public class HibernateRepository implements Repository {
         try (EntityManagerWrapper wrapper = HibernateFactory.getEntityManger()) {
             EntityManager em = wrapper.get();
             em.getTransaction().begin();
-
             em.remove(em.contains(person) ? person : em.merge(person));
-
             em.getTransaction().commit();
         }
     }
@@ -53,9 +49,7 @@ public class HibernateRepository implements Repository {
     public Person getPerson(int idPerson) throws Exception {
         try (EntityManagerWrapper wrapper = HibernateFactory.getEntityManger()) {
             EntityManager em = wrapper.get();
-
             return em.find(Person.class, idPerson);
-
         }
     }
 
@@ -63,8 +57,7 @@ public class HibernateRepository implements Repository {
     public List<Person> getPeople() throws Exception {
         try (EntityManagerWrapper wrapper = HibernateFactory.getEntityManger()) {
             EntityManager em = wrapper.get();
-            return em.createNamedQuery(HibernateFactory.SELECT_ALL).getResultList();
-
+            return em.createNamedQuery(HibernateFactory.SELECT_ALL_PEOPLE).getResultList();
         }
     }
 
@@ -73,5 +66,51 @@ public class HibernateRepository implements Repository {
         HibernateFactory.release();
     }
 
-    
+    @Override
+    public int addPet(Pet data) throws Exception {
+        try (EntityManagerWrapper wrapper = HibernateFactory.getEntityManger()) {
+            EntityManager em = wrapper.get();
+            em.getTransaction().begin();
+            Pet pet = new Pet(data);
+            em.persist(pet);
+            em.getTransaction().commit();
+            return pet.getIDPet();
+        }
+    }
+
+    @Override
+    public void updatePet(Pet pet) throws Exception {
+        try (EntityManagerWrapper wrapper = HibernateFactory.getEntityManger()) {
+            EntityManager em = wrapper.get();
+            em.getTransaction().begin();
+            em.find(Pet.class, pet.getIDPet()).updateDetails(pet);
+            em.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public void deletePet(Pet pet) throws Exception {
+        try (EntityManagerWrapper wrapper = HibernateFactory.getEntityManger()) {
+            EntityManager em = wrapper.get();
+            em.getTransaction().begin();
+            em.remove(em.contains(pet) ? pet : em.merge(pet));
+            em.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public Pet getPet(int idPet) throws Exception {
+        try (EntityManagerWrapper wrapper = HibernateFactory.getEntityManger()) {
+            EntityManager em = wrapper.get();
+            return em.find(Pet.class, idPet);
+        }
+    }
+
+    @Override
+    public List<Pet> getPets() throws Exception {
+        try (EntityManagerWrapper wrapper = HibernateFactory.getEntityManger()) {
+            EntityManager em = wrapper.get();
+            return em.createNamedQuery(HibernateFactory.SELECT_ALL_PETS).getResultList();
+        }
+    }
 }

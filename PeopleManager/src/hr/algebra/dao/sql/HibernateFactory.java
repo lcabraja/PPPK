@@ -15,7 +15,8 @@ import javax.persistence.Persistence;
 public class HibernateFactory {
     
     private static final String PERSISTENCE_UNIT = "PeopleManagerPU";
-    public static final String SELECT_ALL = "Person.findAll";
+    public static final String SELECT_ALL_PEOPLE = "Person.findAll";
+    public static final String SELECT_ALL_PETS = "Pet.findAll";
     
     private static final EntityManagerFactory EMF = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
     

@@ -8,10 +8,11 @@ package hr.algebra.controller;
 import hr.algebra.PeopleApplication;
 import hr.algebra.dao.RepositoryFactory;
 import hr.algebra.model.Person;
+import hr.algebra.model.Pet;
 import hr.algebra.utilities.FileUtils;
 import hr.algebra.utilities.ImageUtils;
 import hr.algebra.utilities.ValidationUtils;
-import hr.algebra.viewmodel.PersonViewModel;
+import hr.algebra.viewmodel.PetViewModel;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +32,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -47,13 +49,14 @@ import javafx.util.converter.IntegerStringConverter;
  *
  * @author daniel.bele
  */
-public class PeopleController implements Initializable {
+public class PetsController implements Initializable {
 
     private Map<TextField, Label> validationMap;
 
-    private final ObservableList<PersonViewModel> list = FXCollections.observableArrayList();
+    private final ObservableList<PetViewModel> pets = FXCollections.observableArrayList();
+    private final ObservableList<Person> owners = FXCollections.observableArrayList();
 
-    private PersonViewModel selectedPersonViewModel;
+    private PetViewModel selectedPetViewModel;
 
     private boolean edit = false;
 
@@ -62,31 +65,27 @@ public class PeopleController implements Initializable {
     @FXML
     private Tab tabList;
     @FXML
-    private TableView<PersonViewModel> tvPeople;
+    private TableView<PetViewModel> tvPets;
     @FXML
-    private TableColumn<PersonViewModel, String> tcFirstName, tcLastName, tcEmail;
+    private TableColumn<PetViewModel, String> tcName, tcOwner;
     @FXML
-    private TableColumn<PersonViewModel, Integer> tcAge;
+    private TableColumn<PetViewModel, Integer> tcAge;
     @FXML
     private Tab tabEdit;
     @FXML
-    private TextField tfFirstName;
+    private TextField tfName;
     @FXML
-    private Label lbFirstName;
-    @FXML
-    private TextField tfLastName;
-    @FXML
-    private Label lbLastName;
+    private Label lbName;
     @FXML
     private TextField tfAge;
     @FXML
     private Label lbAge;
     @FXML
-    private TextField tfEmail;
+    private ComboBox<Person> cbOwners;
     @FXML
-    private Label lbEmail;
+    private Label lbOwner;
     @FXML
-    private ImageView ivPerson;
+    private ImageView ivPet;
     @FXML
     private Label lbIcon;
 
@@ -96,8 +95,9 @@ public class PeopleController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initValidation();
-        initPeople();
+        initObservables();
         initTable();
+        initComboBox();
         addIntegerMask(tfAge);
         setupListeners();
     }
@@ -109,44 +109,43 @@ public class PeopleController implements Initializable {
 
     @FXML
     private void edit(ActionEvent event) {
-        if (tvPeople.getSelectionModel().getSelectedItem() != null) {
+        if (tvPets.getSelectionModel().getSelectedItem() != null) {
             edit = true;
-            bindPerson(tvPeople.getSelectionModel().getSelectedItem());
+            bindPet(tvPets.getSelectionModel().getSelectedItem());
             tpContent.getSelectionModel().select(tabEdit);
         }
     }
 
-    private void bindPerson(PersonViewModel viewModel) {
+    private void bindPet(PetViewModel viewModel) {
         resetForm();
-        selectedPersonViewModel = viewModel != null ? viewModel : new PersonViewModel(null);
-        tfFirstName.setText(selectedPersonViewModel.getPerson().getFirstName());
-        tfLastName.setText(selectedPersonViewModel.getPerson().getLastName());
-        tfAge.setText(String.valueOf(selectedPersonViewModel.getPerson().getAge()));
-        tfEmail.setText(selectedPersonViewModel.getPerson().getEmail());
-        ivPerson.setImage(
-                selectedPersonViewModel.getPerson().getPicture() != null
-                ? new Image(new ByteArrayInputStream(selectedPersonViewModel.getPerson().getPicture()))
+        selectedPetViewModel = viewModel != null ? viewModel : new PetViewModel(null);
+        tfName.setText(selectedPetViewModel.getPet().getName());
+        tfAge.setText(String.valueOf(selectedPetViewModel.getPet().getAge()));
+        cbOwners.getSelectionModel().select(selectedPetViewModel.getPet().getOwner());
+        ivPet.setImage(
+                selectedPetViewModel.getPet().getPicture() != null
+                ? new Image(new ByteArrayInputStream(selectedPetViewModel.getPet().getPicture()))
                 : new Image(new File("src/assets/no_image.png").toURI().toString())
         );
     }
 
     @FXML
     private void delete(ActionEvent event) {
-        if (tvPeople.getSelectionModel().getSelectedItem() != null) {
-            list.remove(tvPeople.getSelectionModel().getSelectedItem());
+        if (tvPets.getSelectionModel().getSelectedItem() != null) {
+            pets.remove(tvPets.getSelectionModel().getSelectedItem());
         }
     }
 
     @FXML
     private void upload(ActionEvent event) {
-        File file = FileUtils.uploadFileDialog(ivPerson.getScene().getWindow(), "jpg", "jpeg", "png");
+        File file = FileUtils.uploadFileDialog(ivPet.getScene().getWindow(), "jpg", "jpeg", "png");
         if (file != null) {
             Image image = new Image(file.toURI().toString());
             try {
                 String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-                setImage(selectedPersonViewModel.getPerson(),
+                setImage(selectedPetViewModel.getPet(),
                         image, ext,
-                        ivPerson);
+                        ivPet);
             } catch (IOException ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
             }
@@ -156,17 +155,17 @@ public class PeopleController implements Initializable {
     private void setupListeners() {
         tabEdit.setOnSelectionChanged(event -> {
             if (tpContent.getSelectionModel().getSelectedItem().equals(tabEdit) && !edit) {
-                bindPerson(null);
+                bindPet(null);
             } else {
                 edit = false;
             }
         });
-        list.addListener((ListChangeListener.Change<? extends PersonViewModel> change) -> {
+        pets.addListener((ListChangeListener.Change<? extends PetViewModel> change) -> {
             if (change.next()) {
                 if (change.wasRemoved()) {
                     change.getRemoved().forEach(pvm -> {
                         try {
-                            RepositoryFactory.getRepository().deletePerson(pvm.getPerson());
+                            RepositoryFactory.getRepository().deletePet(pvm.getPet());
                         } catch (Exception ex) {
                             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                         }
@@ -174,8 +173,8 @@ public class PeopleController implements Initializable {
                 } else if (change.wasAdded()) {
                     change.getAddedSubList().forEach(pvm -> {
                         try {
-                            int idPerson = RepositoryFactory.getRepository().addPerson(pvm.getPerson());
-                            pvm.getPerson().setIDPerson(idPerson);
+                            int idPet = RepositoryFactory.getRepository().addPet(pvm.getPet());
+                            pvm.getPet().setIDPet(idPet);
                         } catch (Exception ex) {
                             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                         }
@@ -189,24 +188,24 @@ public class PeopleController implements Initializable {
     private void commit(ActionEvent event) {
         if (formValid()) {
             try {
-                setPerson(selectedPersonViewModel.getPerson());
+                setPet(selectedPetViewModel.getPet());
 
-                if (selectedPersonViewModel.getPerson().getIDPerson() == 0) {
-                    list.add(selectedPersonViewModel);
+                if (selectedPetViewModel.getPet().getIDPet() == 0) {
+                    pets.add(selectedPetViewModel);
                 } else {
-                    RepositoryFactory.getRepository().updatePerson(selectedPersonViewModel.getPerson());
-                    tvPeople.refresh();
+                    RepositoryFactory.getRepository().updatePet(selectedPetViewModel.getPet());
+                    tvPets.refresh();
                 }
             } catch (Exception ex) {
-                Logger.getLogger(PeopleController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PetsController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            selectedPersonViewModel = null;
+            selectedPetViewModel = null;
             tpContent.getSelectionModel().select(tabList);
             resetForm();
         }
     }
 
-    private void setImage(Person player, Image image, String ext, ImageView ivImage) throws IOException {
+    private void setImage(Pet player, Image image, String ext, ImageView ivImage) throws IOException {
 
         player.setPicture(ImageUtils.imageToByteArray(image, ext));
         ivImage.setImage(image);
@@ -220,27 +219,30 @@ public class PeopleController implements Initializable {
 
     private void initValidation() {
         validationMap = Stream.of(
-                new AbstractMap.SimpleImmutableEntry<>(tfFirstName, lbFirstName),
-                new AbstractMap.SimpleImmutableEntry<>(tfLastName, lbLastName),
-                new AbstractMap.SimpleImmutableEntry<>(tfAge, lbAge),
-                new AbstractMap.SimpleImmutableEntry<>(tfEmail, lbEmail)
+                new AbstractMap.SimpleImmutableEntry<>(tfName, lbName),
+                new AbstractMap.SimpleImmutableEntry<>(tfAge, lbAge)
         ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private void initPeople() {
+    private void initObservables() {
         try {
-            RepositoryFactory.getRepository().getPeople().forEach(person -> list.add(new PersonViewModel(person)));
+            RepositoryFactory.getRepository().getPets().forEach(pet -> pets.add(new PetViewModel(pet)));
+            RepositoryFactory.getRepository().getPeople().forEach(person -> owners.add(person));
         } catch (Exception ex) {
-            Logger.getLogger(PeopleController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PetsController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void initTable() {
-        tcFirstName.setCellValueFactory(person -> person.getValue().getFirstNameProperty());
-        tcLastName.setCellValueFactory(person -> person.getValue().getLastNameProperty());
-        tcAge.setCellValueFactory(person -> person.getValue().getAgeProperty().asObject());
-        tcEmail.setCellValueFactory(person -> person.getValue().getEmailProperty());
-        tvPeople.setItems(list);
+        tcName.setCellValueFactory(pet -> pet.getValue().getNameProperty());
+        tcAge.setCellValueFactory(pet -> pet.getValue().getAgeProperty().asObject());
+        tcOwner.setCellValueFactory(pet -> pet.getValue().getOwnerNameProperty());
+        tvPets.setItems(pets);
+    }
+
+    private void initComboBox() {
+
+       cbOwners.setItems(owners);
     }
 
     private void addIntegerMask(TextField tf) {
@@ -254,7 +256,7 @@ public class PeopleController implements Initializable {
 
         tf.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), 0, integerFilter));
     }
-    
+
     private boolean formValid() {
         final AtomicBoolean ok = new AtomicBoolean(true);
         validationMap.keySet().forEach(tf -> {
@@ -266,7 +268,7 @@ public class PeopleController implements Initializable {
             }
         });
 
-        if (selectedPersonViewModel.getPerson().getPicture() == null) {
+        if (selectedPetViewModel.getPet().getPicture() == null) {
             lbIcon.setVisible(true);
             ok.set(false);
         } else {
@@ -275,10 +277,9 @@ public class PeopleController implements Initializable {
         return ok.get();
     }
 
-    private void setPerson(Person person) {
-        person.setFirstName(tfFirstName.getText().trim());
-        person.setLastName(tfLastName.getText().trim());
-        person.setAge(Integer.valueOf(tfAge.getText().trim()));
-        person.setEmail(tfEmail.getText().trim());
+    private void setPet(Pet pet) {
+        pet.setName(tfName.getText().trim());
+        pet.setAge(Integer.valueOf(tfAge.getText().trim()));
+        pet.setOwner(cbOwners.getSelectionModel().getSelectedItem());
     }
 }
