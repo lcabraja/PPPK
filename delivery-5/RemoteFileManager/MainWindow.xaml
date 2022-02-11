@@ -1,0 +1,85 @@
+﻿<Window x:Class="RemoteFileManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RemoteFileManager" xmlns:converters="clr-namespace:RemoteFileManager.Converters"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="565" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid Background="{StaticResource GradientBackground}" Margin="0,0,0,0">
+        <Grid.Resources>
+            <converters:S3ObjectToS3URLConverter x:Key="S3URLFormatter" />
+            <converters:S3ObjectToString x:Key="S3StringFormatter" />
+            <converters:S3ObjectToExtension x:Key="S3Extension" />
+        </Grid.Resources>
+        <Label Content="Choose directory" HorizontalAlignment="Right" Margin="0,28,664,0" VerticalAlignment="Top"/>
+        <ComboBox 
+            x:Name="CbDirectories"
+            IsEditable="True"
+            KeyDown="CbDirectories_KeyDown"
+            TextBoxBase.TextChanged="CbDirectories_TextChanged"      
+            HorizontalAlignment="Left" Margin="135,30,0,0" VerticalAlignment="Top" Width="168"/>
+        <ListBox 
+            x:Name="LbItems"
+            SelectionChanged="LbItems_SelectionChanged"
+            d:ItemsSource="{d:SampleData ItemCount=5}" Margin="35,65,497,67">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Mode=OneWay, Converter={StaticResource S3StringFormatter}}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Button 
+            x:Name="BtnUpload" 
+            Content="Upload"
+            Background="Black"
+            Click="BtnUpload_Click"
+            HorizontalAlignment="Left" Margin="35,0,0,28" VerticalAlignment="Bottom" Width="84" Height="23"/>
+        <Button 
+            x:Name="BtnDownload" 
+            Content="Download"
+            Background="Orange"
+            Click="BtnDownload_Click"
+            HorizontalAlignment="Left" Margin="127,0,0,28" Width="84" Height="23" VerticalAlignment="Bottom"/>
+        <Button 
+            x:Name="BtnDelete"
+            Content="Delete"
+            Background="Red"
+            Click="BtnDelete_Click"
+            HorizontalAlignment="Left" Margin="219,0,0,28" VerticalAlignment="Bottom" Width="84" Height="23"/>
+
+
+        <Label Content="Content Extension" HorizontalAlignment="Right" Margin="0,25,341,0" VerticalAlignment="Top"/>
+        <TextBox 
+            Text="{Binding Mode=OneWay, Converter={StaticResource S3Extension}}"
+            IsReadOnly="True" 
+            HorizontalAlignment="Right" Margin="0,31,26,0" VerticalAlignment="Top" Width="297"/>
+
+        <Label Content="Content length" HorizontalAlignment="Right" Margin="0,64,341,0" VerticalAlignment="Top"/>
+        <TextBox 
+            Text="{Binding Size, Mode=OneWay}" 
+            IsReadOnly="True" 
+            HorizontalAlignment="Right" Margin="0,70,26,0" VerticalAlignment="Top" Width="297"/>
+
+        <Label Content="StorageClass" HorizontalAlignment="Right" Margin="0,105,341,0" VerticalAlignment="Top"/>
+        <TextBox 
+            Text="{Binding StorageClass, Mode=OneWay}" 
+            IsReadOnly="True" 
+            HorizontalAlignment="Right" Margin="0,111,26,0" VerticalAlignment="Top" Width="297"/>
+
+        <Label Content="Last modified" HorizontalAlignment="Right" Margin="0,144,341,0" VerticalAlignment="Top"/>
+        <TextBox 
+            Text="{Binding LastModified, Mode=OneWay}" 
+            IsReadOnly="True" 
+            HorizontalAlignment="Right" Margin="0,150,26,0" VerticalAlignment="Top" Width="297"/>
+
+        <Label Content="ETag" HorizontalAlignment="Right" Margin="0,190,341,0" VerticalAlignment="Top"/>
+        <TextBox 
+            Text="{Binding ETag, Mode=OneWay}" 
+            IsReadOnly="True" 
+            HorizontalAlignment="Right" Margin="0,196,26,0" VerticalAlignment="Top" Width="297"/>
+
+        <Image x:Name="imPreview" Margin="346,262,24,29" Source="{Binding Mode=OneWay, Converter={StaticResource S3URLFormatter}, TargetNullValue=Assets/no_image.png}" />
+    </Grid>
+</Window>
