@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "RemoteFileManager": {
-      "commandName": "Project",
-      "commandLineArgs": "-t=dp.st.dev.uTF3NMkCrKO4mDVVCKZevXpML7j8O1PFIhHaVigevqb"
-    }
-  }
-}
