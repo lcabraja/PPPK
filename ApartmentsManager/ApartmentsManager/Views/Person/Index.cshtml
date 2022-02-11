@@ -5,11 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>People</h2>
 
-<p>
+<button class="btn" style="margin-bottom:20px">
     @Html.ActionLink("Create New", "Create")
-</p>
+</button>
+<button class="btn" style="margin-bottom:20px">
+    @Html.ActionLink("Pets", "../Pet/Index")
+</button>
 <table class="table">
     <tr>
         <th>
