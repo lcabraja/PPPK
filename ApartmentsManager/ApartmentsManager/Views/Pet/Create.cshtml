@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Create";
     var people = (ViewBag.People as IEnumerable<Person>).ToList();
-    var ddlConfig = new SelectList(people, dataValueField:"IDPerson", dataTextField:"LastName");
+    var ddlConfig = new SelectList(people, dataValueField: "IDPerson", dataTextField: "LastName");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 

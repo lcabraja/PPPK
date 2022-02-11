@@ -52,11 +52,11 @@ namespace ApartmentsManager.Controllers
         public ActionResult Create()
         {
             var people = db.People;
-            ViewBag.People = db.People;       
             if (people.Count() < 1)
             {
                 return RedirectToAction("Index");
             }
+            ViewBag.People = people;       
             return View();
         }
 
@@ -109,8 +109,7 @@ namespace ApartmentsManager.Controllers
                 return HttpNotFound();
             }
 
-            IEnumerable<Person> people = db.People.Where(p => p.IDPerson != pet.OwnerID);
-            ViewBag.People = people;
+            ViewBag.People = db.People.Where(p => p.IDPerson != pet.OwnerID);
 
             return View(pet);
         }
