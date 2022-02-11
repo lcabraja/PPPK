@@ -23,11 +23,6 @@ namespace RemoteFileManager {
         private void Init() {
             CbDirectories.ItemsSource = itemsViewModel.Directories;
             LbItems.ItemsSource = itemsViewModel.Items;
-
-            //S3ObjectToString s3StringFormatter = new();
-            //Binding binding = new Binding("itemsViewMode.Items");
-            //binding.Converter = s3StringFormatter;
-            //LbItems.DataContext = itemsViewModel.Items;
         }
 
         private void CbDirectories_KeyDown(object sender, KeyEventArgs e) {
