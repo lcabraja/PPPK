@@ -109,8 +109,7 @@ namespace ApartmentsManager.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.People = db.People.Where(p => p.IDPerson != pet.OwnerID);
-
+            ViewBag.People = db.People;
             return View(pet);
         }
 
