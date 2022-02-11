@@ -16,7 +16,6 @@ namespace RemoteFileManager.Dao {
         [JsonProperty("PPPK5_SECRET")]
         public string Secret { get; set; }
         private static string GetDopplerToken() {
-            return "dp.st.dev.BTrP16znkoZmoSXFpchJc7YnKEJlDS1zTUxuVzZVeDf";
             var token = Environment.GetEnvironmentVariable("DOPPLER_TOKEN");
             if (token == null && File.Exists("token")) {
                 token = File.ReadAllText("token");
