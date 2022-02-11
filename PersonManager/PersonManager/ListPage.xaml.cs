@@ -41,14 +41,14 @@ namespace Zadatak {
                 { Frame = Frame });
 
         private void BtnEditPet_Click(object sender, RoutedEventArgs e) {
-            if (LvUsers.SelectedItem != null) {
+            if (LvPets.SelectedItem != null) {
                 Frame.Navigate(new EditPetPage(PersonViewModel, PetViewModel, LvPets.SelectedItem as Pet)
                     { Frame = Frame });
             }
         }
 
         private void BtnDeletePet_Click(object sender, RoutedEventArgs e) {
-            if (LvUsers.SelectedItem != null) {
+            if (LvPets.SelectedItem != null) {
                 PetViewModel.Pets.Remove(LvPets.SelectedItem as Pet);
             }
         }
