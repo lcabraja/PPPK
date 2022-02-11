@@ -1,0 +1,46 @@
+﻿@model ApartmentsManager.Pet
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Pet</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Owner.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Owner.FirstName)
+        </dd>
+
+        @foreach (var uploadedFile in Model.UploadedFiles)
+        {
+            <dt>
+                @uploadedFile.Name
+            </dt>
+
+            <dd style="margin-top:10px">
+                <img src="~/File?id=@uploadedFile.IDUploadedFile" alt="picture" width="300" height="200" />
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IDPet }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
