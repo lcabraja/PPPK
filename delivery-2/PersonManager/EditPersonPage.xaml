@@ -1,0 +1,132 @@
+﻿<local:FramedPage x:Class="Zadatak.EditPersonPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Zadatak"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="600"
+      Title="EditPage">
+
+    <Grid Background="{StaticResource GradientBackground}" x:Name="GridContainter">
+        <Button
+            x:Name="BtnBack"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Width="25"
+            Height="25"
+            Margin="30"
+            Click="BtnBack_Click">
+            <Image Source="/Assets/back.png"/>
+        </Button>
+
+        <Label 
+            Content="First name:" 
+            HorizontalAlignment="Left" 
+            Margin="57,89,0,0" 
+            VerticalAlignment="Top" 
+            Foreground="#FFF6F9FE"/>
+
+        <TextBox 
+            x:Name="TbFirstName"
+            HorizontalAlignment="Left" 
+            Height="23" 
+            Margin="134,88,0,0" 
+            TextWrapping="Wrap" 
+            Text="{Binding FirstName}" 
+            VerticalAlignment="Top" Width="171"/>
+
+        <Label 
+            Content="Last Name:" 
+            HorizontalAlignment="Left" 
+            Margin="57,133,0,0" 
+            VerticalAlignment="Top" 
+            Foreground="#FFF6F9FE"/>
+
+        <TextBox 
+            x:Name="TbLastName"
+            HorizontalAlignment="Left" 
+            Height="23" 
+            Margin="134,134,0,0" 
+            TextWrapping="Wrap" 
+            Text="{Binding LastName}" 
+            VerticalAlignment="Top" Width="171"/>
+
+        <Label 
+            Content="Age" 
+            HorizontalAlignment="Left" 
+            Margin="57,187,0,0" 
+            VerticalAlignment="Top" 
+            Foreground="#FFF6F9FE"/>
+
+        <TextBox 
+            x:Name="TbAge"
+            HorizontalAlignment="Left" 
+            Height="23" 
+            Margin="267,187,0,0" 
+            TextWrapping="Wrap" 
+            Text="{Binding Age}" 
+            VerticalAlignment="Top" 
+            Width="38"
+            Tag="Int"/>
+
+        <Label 
+            Content="Email" 
+            HorizontalAlignment="Left" 
+            Margin="57,235,0,0" 
+            VerticalAlignment="Top" 
+            Foreground="#FFF6F9FE"/>
+
+        <TextBox 
+            x:Name="TbEmail"
+            HorizontalAlignment="Left" 
+            Height="23" 
+            Margin="134,235,0,0" 
+            TextWrapping="Wrap" 
+            Text="{Binding Email}" 
+            VerticalAlignment="Top" 
+            Width="171"
+            Tag="Email"/>
+
+        <Button 
+            x:Name="BtnCommit"
+            Content="Commit" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Width="75" 
+            Foreground="WhiteSmoke"
+            Background="#13242C"            
+            Click="BtnCommit_Click"
+            Margin="86,322,0,0"/>
+
+        <Button 
+            x:Name="BtnUpload"
+            Content="Upload Image" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Width="106" 
+            Foreground="WhiteSmoke"
+            Background="DarkOrange"            
+            Click="BtnUpload_Click"
+            Margin="199,322,0,0"/>
+
+        <Border 
+            x:Name="PictureBorder"
+            BorderBrush="WhiteSmoke" 
+            BorderThickness="0.3"  
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top" Margin="0,79,48,0">
+            <Image
+                x:Name="Picture" 
+                Stretch="Uniform"
+                Width="198"
+                Height="252"
+                Source="{Binding Image}" 
+               />
+        </Border>
+
+
+    </Grid>
+</local:FramedPage>
